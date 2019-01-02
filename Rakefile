@@ -13,7 +13,7 @@ namespace :demo do
   # thus override the config settings defined above.
   DEMO = {
     nss:  ['src/*.nss', '../sm-utils/src/*.nss', 'demo/src/*.nss'],
-    gff:  ['demo/src/*.*.yml'],
+    gff:  ['src/*.*.yml', 'demo/src/*.*.yml'],
     file: 'sm_dialogs.mod'
   } 
 

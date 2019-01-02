@@ -3,7 +3,7 @@ __data_type: DLG
 __struct_id: 4294967295
 DelayEntry: {type: dword, value: 0}
 DelayReply: {type: dword, value: 0}
-EndConverAbort: {type: resref, value: ''}
+EndConverAbort: {type: resref, value: dlg_e_end}
 EndConversation: {type: resref, value: dlg_e_end}
 EntryList:
   type: list
