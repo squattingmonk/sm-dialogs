@@ -1,0 +1,10 @@
+# Build directory
+build/
+
+# Unpack directory
+tmp/
+
+# Packaged files
+*.erf
+*.hak
+*.mod
