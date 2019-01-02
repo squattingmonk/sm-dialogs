@@ -13,7 +13,7 @@ than a demo. You have been warned.
 ## Installation
 Get the code:
 ```
-git clone https://github.com/squattingmonk/sm-dialogs
+git clone https://github.com/squattingmonk/sm-utils
 git clone https://github.com/squattingmonk/sm-dialogs
 ```
 
