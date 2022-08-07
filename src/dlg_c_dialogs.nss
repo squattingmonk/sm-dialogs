@@ -45,20 +45,20 @@ const string DLG_LABEL_BACK = "[Back]";
 // one of these node types is negative, the default color (white for NPC text
 // and light blue for PC responses) will be used instead. These settings can be
 // adjusted on a per-dialog or per-page basis using SetDialogColor().
-const int DLG_COLOR_CONTINUE = COLOR_BLUE;
+const int DLG_COLOR_CONTINUE = COLOR_BLUE_DODGER;
 const int DLG_COLOR_END      = COLOR_RED;
-const int DLG_COLOR_PREV     = COLOR_GREEN;
-const int DLG_COLOR_NEXT     = COLOR_GREEN;
+const int DLG_COLOR_PREV     = COLOR_GREEN_LIME;
+const int DLG_COLOR_NEXT     = COLOR_GREEN_LIME;
 const int DLG_COLOR_BACK     = COLOR_YELLOW;
 
 // This is the hex code used to color text enclosed in the <StartAction> tag.
-const int DLG_COLOR_ACTION = COLOR_GREEN;
+const int DLG_COLOR_ACTION = COLOR_GREEN_LIME;
 
 // This is the hex code used to color text enclosed in the <StartCheck> tag.
 const int DLG_COLOR_CHECK = COLOR_RED;
 
 // This is the hex code used to color text enclosed in the <StartHighlight> tag.
-const int DLG_COLOR_HIGHLIGHT = COLOR_BLUE;
+const int DLG_COLOR_HIGHLIGHT = COLOR_BLUE_DODGER;
 
 // ----- Miscellaneous ---------------------------------------------------------
 
