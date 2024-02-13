@@ -1,43 +1,42 @@
-// -----------------------------------------------------------------------------
-//    File: dlg_i_dialogs.nss
-//  System: Dynamic Dialogs (include script)
-//     URL: https://github.com/squattingmonk/nwn-core-framework
-// Authors: Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
-// -----------------------------------------------------------------------------
-// This is the main include file for the Dynamic Dialogs system. It should not be
-// edited by the builder. Place all customization in dlg_c_dialogs instead.
-// -----------------------------------------------------------------------------
-// Acknowledgements:
-// This system is inspired by Acaos's HG Dialog system and Greyhawk0's
-// ZZ-Dialog, which is itself based on pspeed's Z-dialog.
-// -----------------------------------------------------------------------------
-// System Design:
-// A dialog is made up of pages (NPC text) and nodes (PC responses). Both pages
-// and nodes have text which is displayed to the player. Nodes also have a
-// target, a page that will be shown when the player clicks the node. By
-// default, all nodes added to a page will be shown, but they can be filtered
-// based on conditions (see below).
-//
-// The system is event-driven, with the following events accessible from the
-// dialog script using GetDialogEvent():
-//   - DLG_EVENT_INIT: Initial setup. Pages and nodes are added to map the
-//     dialog.
-//   - DLG_EVENT_PAGE: A page is shown to the PC. Text can be altered before
-//     being shown, nodes can be filtered out using FilterDialogNodes(), and you
-//     can even change the page being shown.
-//   - DLG_EVENT_NODE: A node was clicked. The page and node are accessible
-//     using GetDialogPage() and GetDialogNode(), respectively. You can set a
-//     new target for the page if you do not want the one that was already
-//     assigned to the node.
-//   - DLG_EVENT_END: The dialog was ended normally (through an End Dialog node
-//     or a page with no responses).
-//   - DLG_EVENT_ABORT: The dialog was aborted by the player.
-// -----------------------------------------------------------------------------
+/// -----------------------------------------------------------------------------
+/// @file   dlg_i_dialogs.nss
+/// @author Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
+/// @brief  Dynamic Dialogs (include script)
+/// -----------------------------------------------------------------------------
+/// This is the main include file for the Dynamic Dialogs system. It should not be
+/// edited by the builder. Place all customization in dlg_c_dialogs instead.
+/// -----------------------------------------------------------------------------
+/// Acknowledgements:
+/// This system is inspired by Acaos's HG Dialog system and Greyhawk0's
+/// ZZ-Dialog, which is itself based on pspeed's Z-dialog.
+/// -----------------------------------------------------------------------------
+/// System Design:
+/// A dialog is made up of pages (NPC text) and nodes (PC responses). Both pages
+/// and nodes have text which is displayed to the player. Nodes also have a
+/// target, a page that will be shown when the player clicks the node. By
+/// default, all nodes added to a page will be shown, but they can be filtered
+/// based on conditions (see below).
+///
+/// The system is event-driven, with the following events accessible from the
+/// dialog script using GetDialogEvent():
+///   - DLG_EVENT_INIT: Initial setup. Pages and nodes are added to map the
+///     dialog.
+///   - DLG_EVENT_PAGE: A page is shown to the PC. Text can be altered before
+///     being shown, nodes can be filtered out using FilterDialogNodes(), and you
+///     can even change the page being shown.
+///   - DLG_EVENT_NODE: A node was clicked. The page and node are accessible
+///     using GetDialogPage() and GetDialogNode(), respectively. You can set a
+///     new target for the page if you do not want the one that was already
+///     assigned to the node.
+///   - DLG_EVENT_END: The dialog was ended normally (through an End Dialog node
+///     or a page with no responses).
+///   - DLG_EVENT_ABORT: The dialog was aborted by the player.
+/// -----------------------------------------------------------------------------
 
 #include "util_i_datapoint"
 #include "util_i_debug"
-#include "util_i_lists"
 #include "util_i_libraries"
+#include "util_i_lists"
 #include "dlg_c_dialogs"
 
 // -----------------------------------------------------------------------------
@@ -76,6 +75,10 @@ const string DLG_NO_HELLO      = "*NoHello";
 const string DLG_TOKEN         = "*Token";
 const string DLG_TOKEN_CACHE   = "*TokenCache";
 const string DLG_TOKEN_VALUES  = "*TokenValues";
+const string DLG_ACTION        = "*Action";
+const string DLG_ACTION_CHECK  = "*Check";
+const string DLG_ACTION_NODE   = "*Node";
+const string DLG_ACTION_PAGE   = "*Page";
 
 // ----- Automated Node IDs ----------------------------------------------------
 
@@ -124,7 +127,6 @@ const int DLG_SCRIPT_ABORT = 1;
 
 const int DLG_CUSTOM_TOKEN = 20000;
 
-
 // -----------------------------------------------------------------------------
 //                               Global Variables
 // -----------------------------------------------------------------------------
@@ -139,429 +141,397 @@ object DLG_SELF = GetLocalObject(GetPCSpeaker(), DLG_SPEAKER);
 
 // ----- Utility Functions -----------------------------------------------------
 
-// ---< DialogEventToString >---
-// ---< dlg_i_dialogs >---
-// Converts a DLG_EVENT_* constant to string representation.
+/// @brief Converts a DLG_EVENT_* constant to its string representation.
+/// @param nEvent DLG_EVENT_* constant.
+/// @returns DLG_EVENT_ON_* constant.
 string DialogEventToString(int nEvent);
 
-// ---< StartDialog >---
-// ---< dlg_i_dialogs >---
-// Initiates a conversation between oPC and oTarget. If oTarget is not a
-// creature or placeable, the PC will talk to himself.
-// Parameters:
-// - oPC: The player character to speak with.
-// - oTarget: The object (usually a creature) that the PC will speak with.
-// - sDialog: The library script to use for the conversation. If blank,
-//   will read the oTarget's local string variable "*Dialog".
-// - bMake: prevent other players from hearing the conversation
-// - bNoHello: prevent the "hello" voicechat from playing on dialog start
-// - bNoZoom: prevent zooming in towards the PC on dialog start
+/// @brief Initiates a conversation.
+/// @param oPC The player character to speak with.
+/// @param oTarget The object (usually a creature) that oPC will speak with.
+/// @param sDialog The library script to use for the conversation.  If blank,
+///     the system will look for the string variable `*Dialog` on oTarget.
+/// @param bPrivate If TRUE, prevents other players from hearing the conversation.
+/// @param bNoHello If TRUE, prevents the "hello" voicechat from playing on dialog
+///     start.
+/// @param bNoZoom If TRUE, prevents zooming in towards oPC on dialog start.
+/// @note If oTarget is not a creature or placeable, oPC will talk to themselves.
 void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", int bPrivate = FALSE, int bNoHello = FALSE, int bNoZoom = FALSE);
 
 // ----- Dialog Setup ----------------------------------------------------------
 
-// ---< HasDialogPage >---
-// ---< dlg_i_dialogs >---
-// Returns whether sPage exists in the dialog.
+/// @brief Returns whether sPage exists in the dialog.
+/// @param sPage The page name to search for.
 int HasDialogPage(string sPage);
 
-// ---< AddDialogPage >---
-// ---< dlg_i_dialogs >---
-// Adds a dialog page named sPage. If sPage already exists, a new page of a
-// continue chain is added. sText is set as the body text. sData is an arbitrary
-// string you can set on the page to store additional information. Returns the
-// name of the page added.
+/// @brief Adds a dialog page.
+/// @param sPage The name of the page to add.  If sPage already exists, a new
+///     page of a continuation chain is added.
+/// @param sText The body text to add to sPage.
+/// @param sData An arbitrary string used to store additional information.
+/// @returns The name of the added page.
+/// @warning Page names should not contain a `#` symbol.
 string AddDialogPage(string sPage, string sText = "", string sData = "");
 
-// ---< ContinueDialogPage >---
-// ---< dlg_i_dialogs >---
-// Links sPage to sTarget using a continue node. This is called automatically
-// when adding multiple pages of the same name with AddDialogPage(), but this
-// function can be called alone to end a continue chain.
+/// @brief Links a page to a target using a continue node.
+/// @param sPage Page name to link to sTarget.
+/// @param sTarget Page name to link to sPage.
+/// @note This function is called automatically when adding multiple pages of
+///     the same name with AddDialogPage(), but this function can be called
+///     separately to end a continue chain.
 void ContinueDialogPage(string sPage, string sTarget);
 
-// ---< AddDialogNode >---
-// ---< dlg_i_dialogs >---
-// Adds a PC response node containing sText to sPage. When clicked, the node
-// will link to page sTarget. sData is an arbitrary string you can set on the
-// page to store additional information. Returns the index of the node added.
+/// @brief Add a response node to a dialog page.
+/// @param sPage Page to add the response node to.
+/// @param sTarget Page to link to the dialog node.
+/// @param sText Text to display on the dialog node.
+/// @param sData An arbitrary string used to store additional information.
 int AddDialogNode(string sPage, string sTarget, string sText, string sData = "");
 
-// ---< CountDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Returns the number of dialog nodes on sPage.
+/// @brief Returns the number of dialog nodes on a dialog page.
+/// @param sPage Page name to count dialog nodes on.
 int CountDialogNodes(string sPage);
 
-// ---< CopyDialogNode >---
-// ---< dlg_i_dialogs >---
-// Copies page sSource's node at index nSource to page sTarget's node at index
-// nTarget. If nTarget is DLG_NODE_NONE, will add it to the end of sTarget's
-// node list. Returns the index of the copied node (or -1 on error).
+/// @brief Copy a dialog node from one page to another.
+/// @param sSource Page to copy a dialog node from.
+/// @param nSource Index of dialog node to copy from.
+/// @param sTarget Page to copy dialog node to.
+/// @param nTarget Index of dialog node to copy to.
+/// @returns Index of the copied node; -1 on error.
+/// @note If nTarget = DLG_NODE_NONE, the copied node will be added to
+///     the end of sTarget's dialog node list.
 int CopyDialogNode(string sSource, int nSource, string sTarget, int nTarget = DLG_NODE_NONE);
 
-// ---< CopyDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Copies all nodes from page sSource to page sTarget. Returns the node count
-// for sTarget.
+/// @brief Copy all dialog nodes from one page to another.
+/// @param sSource Page to copy dialog nodes from.
+/// @param sTarget Page to copy dialog nodes to.
+/// @returns sTarget's dialog node count after the copy operation.
 int CopyDialogNodes(string sSource, string sTarget);
 
-// ---< DeleteDialogNode >---
-// ---< dlg_i_dialogs >---
-// Delete's sPage's node at index nNode. Returns the new node count.
+/// @brief Delete a dialog node.
+/// @param sPage Page to delete dialog node from.
+/// @param nNode Index of dialog node to delete.
+/// @returns sPage's dialog node count after the delete operation.
 int DeleteDialogNode(string sPage, int nNode);
 
-// ---< DeleteDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Deletes all dialog nodes for sPage.
+/// @brief Delete all dialog nodes on a page.
+/// @param sPage Page to delete all dialog nodes from.
 void DeleteDialogNodes(string sPage);
 
-// ---< FilterDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Hides nodes on the current page from the PC, beginning at index nStart and
-// continuing to index nEnd. If nEnd is < 0, will hide only the node at nStart.
+/// @brief Hide specific dialog nodes from the conversation window.
+/// @param nStart Index of dialog node to begin hiding from.
+/// @param nEnd Index of dialog node to end hiding at.
+/// @note Dialog nodes will be hidden on the currently displayed page.
+/// @note If nEnd < 0, only the dialog node at nStart will be hidden.
 void FilterDialogNodes(int nStart, int nEnd = -1);
 
 // ----- Accessor Functions ----------------------------------------------------
 
-// ---< GetDialog >---
-// ---< dlg_i_dialogs >---
-// Returns the name of the current dialog.
+/// @brief Returns the name of the current dialog.
 string GetDialog();
 
-// ---< GetDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Returns the page from which sPage is getting its nodes from.
+/// @brief Determine the source of a page's dialog nodes.
+/// @param sPage Page whose dialog node source is to be determined.
 string GetDialogNodes(string sPage);
 
-// ---< SetDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Causes sPage to use nodes from the page sSource rather than itself. If
-// sSource is blank, will cause sPage to again use itself as the node source.
-// This is useful if you want to have multiple pages use the same node list.
+/// @brief Force a page to use dialog nodes from another page.
+/// @param sPage Page whose dialog nodes will be overwritten.
+/// @param sSource Page where dialog nodes will be sourced from.
+/// @note If sSource = "", sPage will return to using its original dialog nodes.
 void SetDialogNodes(string sPage, string sSource = "");
 
-// ---< GetDialogText >---
-// ---< dlg_i_dialogs >---
-// Returns the text displayed on sPage's node nNode. If nNode is DLG_NODE_NONE,
-// will get the text from sPage itself.
+/// @brief Get the text from a specific dialog node.
+/// @param sPage Page to search dialog nodes on.
+/// @param nNode Index of dialog node to search.
+/// @note If nNode = DLG_NODE_NONE, text from sPage will be retrieved.
 string GetDialogText(string sPage, int nNode = DLG_NODE_NONE);
 
-// ---< SetDialogText >---
-// ---< dlg_i_dialogs >---
-// Sets the text displayed on sPage's node nNode to sText. If nNode is
-// DLG_NODE_NONE, will set the text on sPage itself.
+/// @brief Set the text on a specific dialog node.
+/// @param sText Dialog node text.
+/// @param sPage Page to set dialog node text on.
+/// @param nNode Index of dialog node to set text on.
+/// @note If nNode = DLG_NODE_NONE, sPage's text will be set to sText.
 void SetDialogText(string sText, string sPage, int nNode = DLG_NODE_NONE);
 
-// ---< GetDialogData >---
-// ---< dlg_i_dialogs >---
-// Returns the data string for sPage's node nNode. If nNode is DLG_NODE_NONE,
-// will get the data from sPage itself.
+/// @brief Get the dialog data from a dialog node.
+/// @param sPage Page to retrieve dialog node data from.
+/// @param nNode Index of dialog node to retrieve data from.
+/// @note If nNode = DLG_NODE_NONE, data from sPage will be retrieved.
 string GetDialogData(string sPage, int nNode = DLG_NODE_NONE);
 
-// ---< SetDialogData >---
-// ---< dlg_i_dialogs >---
-// Sets the data string for sPage's node nNode. If nNode is DLG_NODE_NONE, will
-// set the data on sPage itself.
+/// @brief Set the dialog data on a dialog node.
+/// @param sData Data to set.
+/// @param sPage Page to set dialog data on.
+/// @param nNode Index of dialog node to set data on.
+/// @note If nNode = DLG_NODE_NONE, sData will be set on sPage.
 void SetDialogData(string sData, string sPage, int nNode = DLG_NODE_NONE);
 
-// ---< GetDialogTarget >---
-// ---< dlg_i_dialogs >---
-// Returns the target for sPage's node nNode. If nNode is DLG_NODE_NONE, will
-// get the target from sPage itself.
+/// @brief Find the target of a dialog node.
+/// @param sPage Page containing the dialog node to search for.
+/// @param nNode Index of dialog node to search for.
+/// @returns Page name of dialog node's target.
+/// @note If nNode = DLG_NODE_NONE, sPage's target will be retrieved.
 string GetDialogTarget(string sPage, int nNode = DLG_NODE_NONE);
 
-// ---< SetDialogTarget >---
-// ---< dlg_i_dialogs >---
-// Sets the target for sPage's node nNode. If nNode is DLG_NODE_NONE, will set
-// the target on sPage itself.
+/// @brief Set the target of a dialog node.
+/// @param sTarget Page name of target to set on dialog node.
+/// @param spage Page containing dialog node to set target on.
+/// @param nNode Index of dialog node to set target on.
+/// @note If nNode = DLG_NODE_NONE, sTarget will be set on sPage.
 void SetDialogTarget(string sTarget, string sPage, int nNode = DLG_NODE_NONE);
 
-// ---< GetDialogState >---
-// ---< dlg_i_dialogs >---
-// Returns the state of the currently running dialog. Possible return values:
-// - DLG_STATE_INIT: the dialog is new and uninitialized
-// - DLG_STATE_RUNNING: the dialog has been initialized or is in progress
-// - DLG_STATE_ENDED: the dialog has finished
+/// @brief Get the state of the currently running dialog.
+/// @returns DLG_STATE_* constant:
+///     DLG_STATE_INIT: the dialog is new and uninitialized.
+///     DLG_STATE_RUNNING: the dialog has been initialized or is in progress.
+///     DLG_STATE_ENDED: the dialog has finished.
 int GetDialogState();
 
-// ---< SetDialogState >---
-// ---< dlg_i_dialogs >---
-// Sets the state of the currently running dialog. Possible values for nState:
-// - DLG_STATE_INIT: the dialog is new and uninitialized
-// - DLG_STATE_RUNNING: the dialog has been initialized or is in progress
-// - DLG_STATE_ENDED: the dialog has finished
+/// @brief Set the state of the currently running dialog:
+/// @param nState DLG_STATE_* constant:
+///     DLG_STATE_INIT: the dialog is new and uninitialized.
+///     DLG_STATE_RUNNING: the dialog has been initialized or is in progress.
+///     DLG_STATE_ENDED: the dialog has finished.
 void SetDialogState(int nState);
 
-// ---< GetDialogHistory >---
-// ---< dlg_i_dialogs >---
-// Returns a comma-separated list of the previously visited pages, in inverse
-// order of visitation.
+/// @brief Returns a comma-separated list of previously visited page names, in
+///     reverse order of visitation.
 string GetDialogHistory();
 
-// ---< SetDialogHistory >---
-// ---< dlg_i_dialogs >---
-// Sets the list of previously visited pages to sHistory, a comma-separated list
-// of pages in inverse order of visitation.
+/// @brief Sets the currently running dialog's history.
+/// @param sHistory A comma-separated list of previously visited pages, in reverse
+///     order of visitation.
 void SetDialogHistory(string sHistory);
 
-// ---< ClearDialogHistory >---
-// ---< dlg_i_dialogs >---
-// Clears the recently visited page history.
+/// @brief Clear the currently running dialog's history.
 void ClearDialogHistory();
 
-// ---< GetDialogPage >---
-// ---< dlg_i_dialogs >---
-// Returns the current dialog page.
+/// @brief Return the current dialog page.
 string GetDialogPage();
 
-// ---< GetDialogPageNumber >---
-// ---< dlg_i_dialogs >---
-// Returns the child page number if the current dialog page is a child page, otherwise
-// returns 0.  Returns 1 if the current page is a parent page.
+/// @brief Return the current dialog page number.
+/// @returns 1, if the current page is a parent page; the page number if the 
+///     current page is a child page; 0, in case of error or page number cannot
+///     be determined.
 int GetDialogPageNumber();
 
-// ---< GetDialogPageParent >---
-// ---< dlg_i_dialogs >---
-// Returns the parent of the current dialog page, if it exists, otherwise returns "".
+/// @brief Return the page name of the current dialog page's parent.
+/// @note If the current dialog page is not a child page, returns "".
 string GetDialogPageParent();
 
-// ---< SetDialogPage >---
-// ---< dlg_i_dialogs >---
-// Sets the current dialog page to sPage.  If sPage has continue pages, you can pass
-// nPage to select one of those pages.
+/// @brief Set the current dialog page.
+/// @param sPage Page to set as the current dialog page.
+/// @param nPage Page number to set as the current dialog page, if sPage has
+///     continuation/child pages.
 void SetDialogPage(string sPage, int nPage = 1);
 
-// ---< GetDialogNode >---
-// ---< dlg_i_dialogs >---
-// Returns the index of the last-selected dialog node (DLG_NODE_NONE, if the
-// dialog is newly initialized).
+/// @brief Return the index of the last-selected dialog node.
+/// @note Returns DLG_NODE_NONE if no node has been selected yet.
 int GetDialogNode();
 
-// ---< SetDialogNode >---
-// ---< dlg_i_dialogs >---
-// Sets the index of the last-selected dialog node to nNode. You probably
-// shouldn't use this unless you know what you're doing.
+/// @brief Sets the index of the last-selected dialog node.
+/// @param nNode Index of dialog node to set as last-selected.
+/// @warning Using this function without understanding its repurcussions can
+///     cause unexpected behavior.
 void SetDialogNode(int nNode);
 
-// ---< GetDialogEvent >---
-// ---< dlg_i_dialogs >---
-// Returns the current dialog event.  Possible return values:
-// - DLG_EVENT_INIT: dialog setup and initialization
-// - DLG_EVENT_PAGE: page choice and action
-// - DLG_EVENT_NODE: node selected action
-// - DLG_EVENT_END: dialog ended normally
-// - DLG_EVENT_ABORT: dialog ended abnormally
+/// @brief Get the current dialog event.
+/// @returns DLG_EVENT_* constant:
+///     DLG_EVENT_INIT: dialog setup and initialization
+///     DLG_EVENT_PAGE: page choice and action
+///     DLG_EVENT_NODE: node selected action
+///     DLG_EVENT_END: dialog ended normally
+///     DLG_EVENT_ABORT: dialog ended abnormally
 int GetDialogEvent();
 
-// ---< GetDialogLabel >---
-// ---< dlg_i_dialogs >---
-// Alias for GetDialogText() for automated nodes. If sPage is blank will get the
-// node's label for all pages in the dialog.
+/// @brief Alias for GetDialogText() for automated nodes.
+/// @param nNode Index of dialog node to get text from.
+/// @param sPage Page to search for nNode on.
+/// @note If sPage = "", nNode's label for all pages will be returned.
 string GetDialogLabel(int nNode, string sPage = "");
 
-// ---< SetDialogLabel >---
-// ---< dlg_i_dialogs >---
-// Alias for SetDialogText() for automated nodes. If sPage is blank, will set
-// the node's label for all pages in the dialog.
+/// @brief Alias for SetDialogText() for automated nodes.
+/// @param nNode Index of dialog node to set text on.
+/// @param sLabel Text to set on dialog node.
+/// @param sPage Page to set dialog text on.
+/// @note If sPage = "", nNode's label for all pages will be set to sLabel.
 void SetDialogLabel(int nNode, string sLabel, string sPage = "");
 
-// ---< EnableDialogNode >---
-// ---< dlg_i_dialogs >---
-// Enables an automated node for sPage. If sPage is blank, will enable the node
-// for all pages in the dialog.
+/// @brief Enable a dialog node.
+/// @param nNode Index of dialog node to enable.
+/// @param sPage Page to enable dialog node on.
+/// @note If sPage = "", nNode will be enabled on all pages.
 void EnableDialogNode(int nNode, string sPage = "");
 
-// ---< DisableDialogNode >---
-// ---< dlg_i_dialogs >---
-// Disabled an automated node for sPage. If sPage is blank, will disable the
-// node for all pages in the dialog.
+/// @brief Disable a dialog node.
+/// @param nNode Index of dialog node to disable.
+/// @param sPage Page to disable dialog node on.
+/// @note If sPage = "", nNode will be enabled on all pages.
 void DisableDialogNode(int nNode, string sPage = "");
 
-// ---< DialogNodeEnabled >---
-// ---< dlg_i_dialogs >---
-// Returns whether the automated node nNode is enabled for sPage. If sPage is
-// blank, will return whether the node is enabled for the dialog in general.
+/// @brief Returns whether a dialog node is enabled.
+/// @param nNode Index of dialog node to check.
+/// @param sPage Page to check for enabled dialog node.
+/// @note If sPage = "", will return whether nNode is enable for the dialog
+///     in general.
 int DialogNodeEnabled(int nNode, string sPage = "");
 
-// ---< EnableDialogEnd >---
-// ---< dlg_i_dialogs >---
-// Enables the automated end dialog node for sPage and sets its label to sLabel.
-// If sPage is blank, will do this for all pages in the dialog. This is
-// equivalent to calling:
-//   EnableDialogNode(DLG_NODE_END, sPage);
-//   SetDialogLabel(DLG_NODE_END, sLabel, sPage);
+/// @brief Enable the automated end dialog node.
+/// @param sLabel Text to set on the end dialog node.
+/// @param sPage Page to set the enable the end dialog node on.
+/// @note If sPage = "", end dialog node will be labeled and enabled on all
+///     dialog pages.
+/// @note This function is equivalent to calling:
+///     EnableDialogNode(DLG_NODE_END, sPage);
+///     SetDialogLabel(DLG_NODE_END, sLabel, sPage);
 void EnableDialogEnd(string sLabel = DLG_LABEL_END, string sPage = "");
 
-// ---< EnableDialogBack >---
-// ---< dlg_i_dialogs >---
-// Enables the automated back node for sPage and sets its label to sLabel.  If
-// sPage is blank, will do this for all pages in the dialog. This is equivalent
-// to calling:
-//   EnableDialogNode(DLG_NODE_BACK, sPage);
-//   SetDialogLabel(DLG_NODE_BACK, sLabel, sPage);
+/// @brief Enable the automated back dialog node.
+/// @param sLabel Text to set on the back dialog node.
+/// @param sPage Page to set the enable the back dialog node on.
+/// @note If sPage = "", back dialog node will be labeled and enabled on all
+///     dialog pages.
+/// @note This function is equivalent to calling:
+///     EnableDialogNode(DLG_NODE_BACK, sPage);
+///     SetDialogLabel(DLG_NODE_BACK, sLabel, sPage);
 void EnableDialogBack(string sLabel = DLG_LABEL_BACK, string sPage = "");
 
-// ---< GetDialogOffset >---
-// ---< dlg_i_dialogs >---
-// Returns the number of nodes before the first node shown in the response list.
+/// @brief Returns the number of nodes before the first node displayed on the
+///     dialog response list.
 int GetDialogOffset();
 
-// ---< SetDialogOffset >---
-// ---< dlg_i_dialogs >---
-// Sets the index of the first node to be shown in the response list. If this is
-// greater than 0, an automated previous node will be shown.
+/// @brief Set the index of the first dialog node to be shown on the dialog
+///     response list.
+/// @param nOffset Index of dialog node.
+/// @note If nOffset > 0, the automated previous node will be displayed.
 void SetDialogOffset(int nOffset);
 
-// ---< GetDialogFilter >---
-// ---< dlg_i_dialogs >---
-// Returns the filter that controls the display of the node at index nPos.
+/// @brief Returns the filter that controls the display of a node.
+/// @param nPos Index of dialog node to check filter for.
 int GetDialogFilter(int nPos = 0);
 
-// ---< GetDialogColor >---
-// ---< dlg_i_dialogs >---
-// Returns the color constant used to color the automated node nNode. If sPage
-// is blank, will return the color used for this node dialog-wide. Note that
-// this function returns a color code, not a hex color.
+/// @brief Return the color constant used to color an automated dialog node.
+/// @param nNode Index of automated dialog node.
+/// @param sPage Page containing nNode.
+/// @warning The nwn color code is returned, not a hex color.
 string GetDialogColor(int nNode, string sPage = "");
 
-// ---< SetDialogColor >---
-// ---< dlg_i_dialogs >---
-// Sets the hex color used to color the automated node nNode. If sPage is blank,
-// will set the color for this node dialog-wide.
+/// @brief Set the hex color used to color an automated dialog node.
+/// @param nNode Index of automated dialog node to color.
+/// @param nColor Hex color used to color dialog nodes.
+/// @param sPage Page containing nNode.
+/// @note If sPage = "", nNode on every dialog page will be colored.
 void SetDialogColor(int nNode, int nColor, string sPage = "");
 
 // ----- Dialog Tokens ---------------------------------------------------------
 
-// ---< NormalizeDialogToken >---
-// ---< dlg_i_dialogs >---
-// Returns the form of a token used with AddDialogToken(). If all lowercase, the
-// token can resolve to uppercase or lowercase, depending on the value of
-// sToken. Otherwise, the value will not have its case changed.
+/// @brief Returns the form of a token used with AddDialogToken(). If all
+///     lowercase, the token can resolve to uppercase or lowercase, depending
+///     on the value of sToken. Otherwise, the value will not have its case changed.
+/// @param sToken String token to normalize.
+/// @returns sToken with appropriate capitalization applied.
 string NormalizeDialogToken(string sToken);
 
-// ---< SetDialogTokenValue >---
-// ---< dlg_i_dialogs >---
-// Used in token evaluation scripts to set the value the token should resolve
-// to. If the value can be either lowercase or uppercase, always set the
-// uppercase version.
+/// @brief Used in token evaluation scripts to set the value the token should resolve
+///     to. If the value can be either lowercase or uppercase, always set the
+///     uppercase version.
+/// @param sValue Value to set dialog token to.
 void SetDialogTokenValue(string sValue);
 
-// ---< AddDialogToken >---
-// ---< dlg_i_dialogs >---
-// Adds a token, which will be evaluated at displaytime by the library script
-// sEvalScript. If sToken is all lowercase, the token can be used in either
-// upper- or lowercase forms. Otherwise, the token is case-sensitive and must
-// match sToken. sValues is a CSV list of possible values that can be handed to
-// sEvalScript.
+/// @brief Adds a token, which will be evaluated at displaytime by the library script
+///     sEvalScript. If sToken is all lowercase, the token can be used in either
+///     upper- or lowercase forms. Otherwise, the token is case-sensitive and must
+///     match sToken. sValues is a CSV list of possible values that can be handed to
+///     sEvalScript.
+/// @param sToken Token to add to dialog token list.
+/// @param sEvalScript Script or function that will be run to determine value of sToken.
+/// @param sValues Comma-separated list of possible values that will be passed to
 void AddDialogToken(string sToken, string sEvalScript = "", string sValues = "");
 
-// ---< AddDialogTokens >---
-// ---< dlg_i_dialogs >---
-// Adds all the default dialog tokens. This is called by the system during the
-// dialog init stage and need not be used by the builder.
+/// @brief Add all default dialog tokens.  This is called by the system during the
+///     dialog init stage and need not be used by the builder.
 void AddDialogTokens();
 
-// ---< AddCachedDialogToken >---
-// ---< dlg_i_dialogs >---
-// Adds sToken and caches sValue to it.  This is a convenience function add
-// pre-defined tokens.
+/// @brief Add a cached dialog token with a known value.
+/// @param sToken Name of dialog token.
+/// @param sValue Cached value of dialog token.
+/// @note If a dialog token's value will generally not change, this function can
+///     be used to hasten token resolution.
 void AddCachedDialogToken(string sToken, string sValue);
 
-// ---< GetCachedDialogToken >---
-// ---< dlg_i_dialogs >---
-// Returns the cached value for sToken, if any.
+/// @brief Returns a cached token value.
+/// @param sToken Name of dialog token.
 string GetCachedDialogToken(string sToken);
 
-// ---< CacheDialogToken >---
-// ---< dlg_i_dialogs >---
-// Caches the value of a token so that the eval script does not have to run
-// every time the token is encountered. This cache lasts for the lifetime of the
-// dialog.
+/// @brief Caches the value of a token so that the eval script does not have to run
+///     every time the token is encountered. This cache lasts for the lifetime of the
+///     dialog.
+/// @param sToken Name of dialog token.
+/// @param sValue Cached value of dialog token. 
 void CacheDialogToken(string sToken, string sValue);
 
-// ---< UnCacheDialogToken >---
-// ---< dlg_i_dialogs >---
-// Clears the cache for sToken, ensuring that the next time the token is
-// encountered, its eval script will run again.
+/// @brief Clears the cache for sToken, ensuring that the next time the token is
+///     encountered, its eval script will run again.
+/// @param sToken Name of dialog token.
 void UnCacheDialogToken(string sToken);
 
-// ---< EvalDialogToken >---
-// ---< dlg_i_dialogs >---
-// Runs the appropriate evaluation script for sToken using oPC as OBJECT_SELF.
-// Returns the token value. This is called by the system and need not be used by
-// the builder.
+/// @brief Runs the appropriate evaluation script for sToken using oPC as OBJECT_SELF.
+///     Returns the token value. This is called by the system and need not be used by
+///     the builder.
+/// @param sToken Name of dialog token.
+/// @param oPC Player object running current dialog.
 string EvalDialogToken(string sToken, object oPC);
 
-// ---< FunctionName >---
-// ---< dlg_i_dialogs >---
-// Evaluates all tokens in sString and interpolates them. This is called by the
-// system and need not be used by the builder.
+/// @brief Evaluates all tokens in sString and interpolates them. This is called by the
+///     system and need not be used by the builder.
+/// @param sString String containing tokens to be evaluated.
 string EvalDialogTokens(string sString);
 
 // ----- System Functions ------------------------------------------------------
 
-// ---< InitializeDialogSystem >---
-// ---< dlg_i_dialogs >---
-// Sets up the datapoint containing all dialog caches. This function is called
-// automatically, but you can call it again to reset the dialogs system if you
-// need.
-void InitializeDialogSystem();
-
-// ---< GetDialogCache >---
-// ---< dlg_i_dialogs >---
-// Returns the object that holds the cached data for sDialog.
+/// @brief Returns the object holding cached dialog data.
+/// @param sDialog Name of dialog.
 object GetDialogCache(string sDialog);
 
-// ---< RegisterDialogScript >---
-// ---< dlg_i_dialogs >---
-// Registers a library script as handling particular events for sDialog.  If
-// sScript is blank, will use sDialog as the script name. nEvents is a bitmasked
-// field showing the events the script handles.  fPriority determines the order
-// scripts will be called if there are multiple scripts that have been
-// registered for this event to this dialog. This is useful if you want to have
-// outside scripts add or handle new nodes and pages.
+/// @brief Registers a library script as handling particular events for a dialog.
+/// @param sDialog Name of dialog to register events to.
+/// @param sScript Name of dialog script to register.
+/// @param nEvents Bitmasked list of DLG_EVENT_* constants to register.
+/// @param fPriority Determines order in which scripts will be called.
+/// @note fPriority is useful if there are multiple scripts that have been
+//      registered for this event to this dialog. This is useful if you want to have
+//      outside scripts add or handle new nodes and pages.
 void RegisterDialogScript(string sDialog, string sScript = "", int nEvents = DLG_EVENT_ALL, float fPriority = DLG_PRIORITY_DEFAULT);
 
-// ---< SortDialogScripts >---
-// ---< dlg_i_dialogs >---
-// Sorts all scripts registered to the current dialog for nEvent by priority.
+/// @brief Sorts all scripts registered to the current dialog by priority.
+/// @param nEvent DLG_EVENT_* constant.
 void SortDialogScripts(int nEvent);
 
-// ---< SendDialogEvent >---
-// ---< dlg_i_dialogs >---
-// Calls all scripts registered to nEvent for the current dialog in order of
-// priority. The called scripts can use LibraryReturn(DLG_SCRIPT_ABORT) to stop
-// remaining scripts from firing.
+/// @brief Calls all scripts registered to nEvent for the current dialog in order of
+///     priority.
+/// @param nEvent DLG_EVENT_* constant.
+/// @note The called scripts can use LibraryReturn(DLG_SCRIPT_ABORT) to stop remaining
+///     scripts from firing.
 void SendDialogEvent(int nEvent);
 
-// ---< InitializeDialog >---
-// ---< dlg_i_dialogs >---
-// Creates a cache for the current dialog and send the DLG_EVENT_INIT event if
-// it was not already created, instantiates the cache for the current PC, and
-// sets the dialog state to DLG_STATE_RUNNING.
+/// @brief Creates a cache for the current dialog and send the DLG_EVENT_INIT event if
+///     it was not already created, instantiates the cache for the current PC, and
+///     sets the dialog state to DLG_STATE_RUNNING.
 void InitializeDialog();
 
-// ---< LoadDialogPage >---
-// ---< dlg_i_dialogs >---
-// Runs the DLG_EVENT_PAGE event for the current page and sets the page text.
-// Returns whether a valid page was returned and the dialog should continue.
+/// @brief Runs the DLG_EVENT_PAGE event for the current page and sets the page text.
+/// @returns Whether a valid page was returned and the dialog should continue.
 int LoadDialogPage();
 
-// ---< LoadDialogNodes >---
-// ---< dlg_i_dialogs >---
-// Evaluates which nodes should be shown to the PC and sets the appropriate
-// text.
+/// @brief Evaluates which nodes should be shown to the PC and sets the appropriate
+///     text.
 void LoadDialogNodes();
 
-// ---< DoDialogNode >---
-// ---< dlg_i_dialogs >---
-// Sends the DLG_EVENT_NODE event for the node represented by the response
-// nClicked.
+/// @brief Sends the DLG_EVENT_NODE event for the node represented by a PC response.
+/// @param nClicked Dialog node clicked by PC.
 void DoDialogNode(int nClicked);
 
-// ---< DialogCleanup >---
-// ---< dlg_i_dialogs >---
-// Cleans up leftover dialog data when a conversation ends.
+/// @brief Cleans up leftover dialog data when a conversation ends.
 void DialogCleanup();
 
 // -----------------------------------------------------------------------------
@@ -615,7 +585,6 @@ void StartDialog(object oPC, object oTarget = OBJECT_SELF, string sDialog = "", 
 
     AssignCommand(oPC, ActionStartConversation(oTarget, sResRef, bPrivate, !bNoHello));
 }
-
 
 // ----- Dialog Setup ----------------------------------------------------------
 
@@ -809,11 +778,9 @@ void FilterDialogNodes(int nStart, int nEnd = -1)
     }
 
     int nMax = GetLocalInt(DIALOG, DLG_FILTER_MAX);
-
     if (nMax <= nBlockEnd)
         SetLocalInt(DIALOG, DLG_FILTER_MAX, nBlockEnd + 1);
 }
-
 
 // ----- Accessor Functions ----------------------------------------------------
 
@@ -897,30 +864,15 @@ string GetDialogPage()
 
 int GetDialogPageNumber()
 {
-    string sPage = GetDialogPage();
-    string sPageNumber = StringParse(sPage, "#", TRUE);
-
-    if (TestStringAgainstPattern("*n", sPageNumber))
-    {
-        if (HasDialogPage(StringRemoveParsed(sPage, sPageNumber, "#", TRUE)))
-            return sPageNumber == "" ? 1 : StringToInt(sPageNumber);
-    }
-
-    return 0;
+    string sPageNumber = JsonGetString(JsonArrayGet(RegExpMatch(".*#(\\d*)", GetDialogPage()), 1));
+    return sPageNumber == "" ? 1 : StringToInt(sPageNumber);
 }
 
 string GetDialogPageParent()
 {
     string sPage = GetDialogPage();
-
-    if (GetDialogPageNumber() >= 2)
-    {
-        // Check right to left in case user used `#` in their page name
-        string sPageNumber = StringParse(sPage, "#", TRUE);
-        return StringRemoveParsed(sPage, sPageNumber, "#", TRUE);
-    }
-
-    return "";    
+    string sName = JsonGetString(JsonArrayGet(RegExpMatch("^(.*)#\\d*", sPage), 1));
+    return sName == "" ? sPage : sName;
 }
 
 void SetDialogPage(string sPage, int nPage = 1)
@@ -1201,45 +1153,22 @@ string EvalDialogToken(string sToken, object oPC)
 
 string EvalDialogTokens(string sString)
 {
-    string sRet, sToken;
-    int nPos, nClose;
-    int nOpen = FindSubString(sString, "<");
     object oPC = GetPCSpeaker();
+    json jTokens = RegExpIterate("<(.*?)>", sString);
+    if (jTokens == JSON_ARRAY)
+        return sString;
 
-    while (nOpen >= 0)
+    jTokens = JsonArrayTransform(jTokens, JSON_ARRAY_UNIQUE);
+    
+    json jEval = JSON_ARRAY;
+    int n; for (n; n < JsonGetLength(jTokens); n++)
     {
-        nClose = FindSubString(sString, ">", nOpen);
-
-        // If no matching bracket, this isn't a token
-        // TODO: handle tokens and unmatched brackets in the same string
-        if (nClose < 0)
-            break;
-
-        // Add everything before the bracket to the return value
-        sRet += GetSubString(sString, nPos, nOpen - nPos);
-
-        // Everything between the brackets is our token
-        sToken = GetSubString(sString, nOpen + 1, nClose - nOpen - 1);
-
-        if (NormalizeDialogToken(sToken) != "")
-        {
-            sRet += EvalDialogToken(sToken, oPC);
-            nPos = nClose + 1;
-        }
-        else
-        {
-            // In case this is an angle bracket before an actual token
-            sRet += "<";
-            nPos = nOpen + 1;
-        }
-
-        // Update position and find the next token
-        nOpen = FindSubString(sString, "<", nPos);
+        string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
+        sString = RegExpReplace("<" + sToken + ">", sString, "^" + IntToString(n + 1));
+        jEval = JsonArrayInsert(jEval, JsonString(EvalDialogToken(sToken, oPC)));
     }
 
-    // Add any remaining text to the return value
-    sRet += GetStringRight(sString, GetStringLength(sString) - nPos);
-    return sRet;
+    return SubstituteString(sString, jEval, "^");
 }
 
 // ----- System Functions ------------------------------------------------------
@@ -1569,5 +1498,3 @@ void DialogCleanup()
     DeleteLocalObject(oPC, DLG_SPEAKER);
     DestroyObject(DIALOG);
 }
-
-//void main(){}

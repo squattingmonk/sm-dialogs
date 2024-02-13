@@ -1,41 +1,40 @@
-// -----------------------------------------------------------------------------
-//    File: dlg_l_tokens.nss
-//  System: Dynamic Dialogs (library script)
-//     URL: https://github.com/squattingmonk/nwn-core-framework
-// Authors: Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
-// -----------------------------------------------------------------------------
-// This library script contains functions used to evaluate conversation tokens.
-// For example, the text "Good <quarterday>" will evaluate to "Good morning" or
-// "Good evening" based on the time of day. These tokens are evaluated at
-// display-time, so you can use the token in your dialog init script without
-// having to know what value the token will need to have when the dialog line is
-// displayed.
-//
-// Token evaluation functions are added using the AddDialogToken() function.
-// This function takes a token to evaluate, a library script matching one of the
-// below functions, and (optionally) a list of possible values. When the library
-// function is called, it can query the token and possible values if needed and
-// then set the value of the token.
-//
-// All of the default tokens provided by the game can be loaded using the
-// function AddDialogTokens() in your dialog init script. You can also add your
-// own tokens using the method above.
-//
-// Tokens are added on a per-dialog basis; you can have different evaluation
-// functions in different dialogs for the same token. This may come in handy if
-// you want to interpolate variables into your dialogs using tokens and don't
-// want to worry about token names clashing.
-//
-// All token evaluation functions have the following in common:
-// - OBJECT_SELF is the PC speaker
-// - GetLocalString(OBJECT_SELF, "*Token") yields the token to be evaluated
-// - GetLocalString(OBJECT_SELF, "*TokenValues") yields the possible values
-// - SetLocalString(OBJECT_SELF, "*Token", ...) sets the token value
-// - SetLocalInt(OBJECT_SELF, "*TokenCache", TRUE) caches the token value so the
-//   library script does not have to be run again. This cache will last the
-//   lifetime of the dialog.
-// - If a token can be lowercase or uppercase, the uppercase values should be
-//   returned. The system takes care of changing to lowercase as needed.
+/// -----------------------------------------------------------------------------
+/// @file   dlg_l_tokens.nss
+/// @author Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
+/// @brief  Dynamic Dialogs (library script)
+/// -----------------------------------------------------------------------------
+/// This library script contains functions used to evaluate conversation tokens.
+/// For example, the text "Good <quarterday>" will evaluate to "Good morning" or
+/// "Good evening" based on the time of day. These tokens are evaluated at
+/// display-time, so you can use the token in your dialog init script without
+/// having to know what value the token will need to have when the dialog line is
+/// displayed.
+///
+/// Token evaluation functions are added using the AddDialogToken() function.
+/// This function takes a token to evaluate, a library script matching one of the
+/// below functions, and (optionally) a list of possible values. When the library
+/// function is called, it can query the token and possible values if needed and
+/// then set the value of the token.
+///
+/// All of the default tokens provided by the game can be loaded using the
+/// function AddDialogTokens() in your dialog init script. You can also add your
+/// own tokens using the method above.
+///
+/// Tokens are added on a per-dialog basis; you can have different evaluation
+/// functions in different dialogs for the same token. This may come in handy if
+/// you want to interpolate variables into your dialogs using tokens and don't
+/// want to worry about token names clashing.
+///
+/// All token evaluation functions have the following in common:
+/// - OBJECT_SELF is the PC speaker
+/// - GetLocalString(OBJECT_SELF, "*Token") yields the token to be evaluated
+/// - GetLocalString(OBJECT_SELF, "*TokenValues") yields the possible values
+/// - SetLocalString(OBJECT_SELF, "*Token", ...) sets the token value
+/// - SetLocalInt(OBJECT_SELF, "*TokenCache", TRUE) caches the token value so the
+///   library script does not have to be run again. This cache will last the
+///   lifetime of the dialog.
+/// - If a token can be lowercase or uppercase, the uppercase values should be
+///   returned. The system takes care of changing to lowercase as needed.
 
 #include "util_i_library"
 

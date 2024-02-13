@@ -1,14 +1,13 @@
-// -----------------------------------------------------------------------------
-//    File: dlg_c_dialogs.nss
-//  System: Dynamic Dialogs (configuation script)
-//     URL: https://github.com/squattingmonk/nwn-core-framework
-// Authors: Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
-// -----------------------------------------------------------------------------
-// This is the main configuration script for the Dynamic Dialogs system. It
-// contains user-definable toggles and settings. You may alter the values of any
-// of the below constants, but do not change the names of the constants
-// themselves. This file is consumed by dlg_i_dialogs as an include directive.
-// -----------------------------------------------------------------------------
+/// -----------------------------------------------------------------------------
+/// @file   dlg_c_dialogs.nss
+/// @author Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
+/// @brief  Dynamic Dialogs (configuation script)
+/// -----------------------------------------------------------------------------
+/// This is the main configuration script for the Dynamic Dialogs system. It
+/// contains user-definable toggles and settings. You may alter the values of any
+/// of the below constants, but do not change the names of the constants
+/// themselves. This file is consumed by dlg_i_dialogs as an include directive.
+/// -----------------------------------------------------------------------------
 
 #include "util_i_color"
 

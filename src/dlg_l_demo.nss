@@ -1,12 +1,11 @@
-// -----------------------------------------------------------------------------
-//    File: dlg_l_demo.nss
-//  System: Dynamic Dialogs (library script)
-//     URL: https://github.com/squattingmonk/nwn-core-framework
-// Authors: Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
-// -----------------------------------------------------------------------------
-// This library contains some example dialogs that show the features of the Core
-// Dialogs system. You can use it as a model for your own dialog libraries.
-// -----------------------------------------------------------------------------
+/// -----------------------------------------------------------------------------
+/// @file   dlg_l_demo.nss
+/// @author Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
+/// @brief  Dynamic Dialogs (library script)
+/// -----------------------------------------------------------------------------
+/// This library contains some example dialogs that show the features of the Core
+/// Dialogs system. You can use it as a model for your own dialog libraries.
+/// -----------------------------------------------------------------------------
 
 #include "dlg_i_dialogs"
 #include "util_i_library"
