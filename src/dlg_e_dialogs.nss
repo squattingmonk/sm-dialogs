@@ -9,9 +9,9 @@
 /// parameters as follows:
 ///                                 Script Param:   Param Value:
 ///     "Text Appears When" Tab:
-///         NPC Nodes               ACTION          PAGE       
-///         PC Nodes                ACTION          CHECK 
-///     "Actions Taken" Tab:        ACTION          NODE
+///         NPC Nodes               *Action         *Page     
+///         PC Nodes                *Action         *Check 
+///     "Actions Taken" Tab:        *Action         *Node
 ///                                 *Node           <node number>
 /// -----------------------------------------------------------------------------
 
