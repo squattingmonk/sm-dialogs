@@ -10,11 +10,11 @@
   },
   "EndConverAbort": {
     "type": "resref",
-    "value": "dlg_dialogabort"
+    "value": "dlg_e_abort"
   },
   "EndConversation": {
     "type": "resref",
-    "value": "dlg_dialogend"
+    "value": "dlg_e_end"
   },
   "EntryList": {
     "type": "list",
@@ -52,11 +52,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -71,11 +83,23 @@
               "__struct_id": 1,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -90,11 +114,23 @@
               "__struct_id": 2,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -109,11 +145,23 @@
               "__struct_id": 3,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -128,11 +176,23 @@
               "__struct_id": 4,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -147,11 +207,23 @@
               "__struct_id": 5,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -166,11 +238,23 @@
               "__struct_id": 6,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -185,11 +269,23 @@
               "__struct_id": 7,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -204,11 +300,23 @@
               "__struct_id": 8,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -223,11 +331,23 @@
               "__struct_id": 9,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -242,11 +362,23 @@
               "__struct_id": 10,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -261,11 +393,23 @@
               "__struct_id": 11,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -280,11 +424,23 @@
               "__struct_id": 12,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -299,11 +455,23 @@
               "__struct_id": 13,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -318,11 +486,23 @@
               "__struct_id": 14,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogcheck"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Check"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -382,6 +562,17 @@
                 "type": "cexostring",
                 "value": "14"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -408,11 +599,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -435,7 +638,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -463,6 +666,17 @@
                 "type": "cexostring",
                 "value": "13"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -489,11 +703,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -516,7 +742,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -544,6 +770,17 @@
                 "type": "cexostring",
                 "value": "12"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -570,11 +807,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -597,7 +846,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -625,6 +874,17 @@
                 "type": "cexostring",
                 "value": "11"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -651,11 +911,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -678,7 +950,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -706,6 +978,17 @@
                 "type": "cexostring",
                 "value": "10"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -732,11 +1015,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -759,7 +1054,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -787,6 +1082,17 @@
                 "type": "cexostring",
                 "value": "9"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -813,11 +1119,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -840,7 +1158,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -868,6 +1186,17 @@
                 "type": "cexostring",
                 "value": "8"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -894,11 +1223,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -921,7 +1262,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -949,6 +1290,17 @@
                 "type": "cexostring",
                 "value": "7"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -975,11 +1327,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1002,7 +1366,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1030,6 +1394,17 @@
                 "type": "cexostring",
                 "value": "6"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1056,11 +1431,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1083,7 +1470,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1111,6 +1498,17 @@
                 "type": "cexostring",
                 "value": "5"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1137,11 +1535,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1164,7 +1574,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1192,6 +1602,17 @@
                 "type": "cexostring",
                 "value": "4"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1218,11 +1639,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1245,7 +1678,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1273,6 +1706,17 @@
                 "type": "cexostring",
                 "value": "3"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1299,11 +1743,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1326,7 +1782,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1354,6 +1810,17 @@
                 "type": "cexostring",
                 "value": "2"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1380,11 +1847,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1407,7 +1886,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1435,6 +1914,17 @@
                 "type": "cexostring",
                 "value": "1"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1461,11 +1951,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1488,7 +1990,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1516,6 +2018,17 @@
                 "type": "cexostring",
                 "value": "0"
               }
+            },
+            {
+              "__struct_id": 1,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Node"
+              }
             }
           ]
         },
@@ -1542,11 +2055,23 @@
               "__struct_id": 0,
               "Active": {
                 "type": "resref",
-                "value": "dlg_dialogpage"
+                "value": "dlg_e_dialogs"
               },
               "ConditionParams": {
                 "type": "list",
-                "value": []
+                "value": [
+                  {
+                    "__struct_id": 0,
+                    "Key": {
+                      "type": "cexostring",
+                      "value": "*Action"
+                    },
+                    "Value": {
+                      "type": "cexostring",
+                      "value": "*Page"
+                    }
+                  }
+                ]
               },
               "Index": {
                 "type": "dword",
@@ -1569,7 +2094,7 @@
         },
         "Script": {
           "type": "resref",
-          "value": "dlg_dialognode"
+          "value": "dlg_e_dialogs"
         },
         "Sound": {
           "type": "resref",
@@ -1591,11 +2116,23 @@
         "__struct_id": 0,
         "Active": {
           "type": "resref",
-          "value": "dlg_dialogpage"
+          "value": "dlg_e_dialogs"
         },
         "ConditionParams": {
           "type": "list",
-          "value": []
+          "value": [
+            {
+              "__struct_id": 0,
+              "Key": {
+                "type": "cexostring",
+                "value": "*Action"
+              },
+              "Value": {
+                "type": "cexostring",
+                "value": "*Page"
+              }
+            }
+          ]
         },
         "Index": {
           "type": "dword",
