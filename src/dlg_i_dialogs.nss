@@ -75,6 +75,7 @@ const string DLG_NO_HELLO      = "*NoHello";
 const string DLG_TOKEN         = "*Token";
 const string DLG_TOKEN_CACHE   = "*TokenCache";
 const string DLG_TOKEN_VALUES  = "*TokenValues";
+const string DLG_TOKEN_SCRIPT  = "*TokenScript";
 const string DLG_ACTION        = "*Action";
 const string DLG_ACTION_CHECK  = "*Check";
 const string DLG_ACTION_NODE   = "*Node";
@@ -1007,6 +1008,9 @@ string NormalizeDialogToken(string sToken)
     if (GetLocalInt(DIALOG, DLG_TOKEN + "*" + sToken))
         return sToken;
 
+    if (GetLocalString(DIALOG, DLG_TOKEN_SCRIPT) != "")
+        return sToken;
+
     string sLower = GetStringLowerCase(sToken);
     if (sToken == sLower || !GetLocalInt(DIALOG, DLG_TOKEN + "*" + sLower))
         return "";
@@ -1017,6 +1021,11 @@ string NormalizeDialogToken(string sToken)
 void SetDialogTokenValue(string sValue)
 {
     SetLocalString(GetPCSpeaker(), DLG_TOKEN, sValue);
+}
+
+void SetDialogTokenScript(string sScript)
+{
+    SetLocalString(DIALOG, DLG_TOKEN_SCRIPT, sScript);
 }
 
 void AddDialogToken(string sToken, string sEvalScript, string sValues = "")
@@ -1127,6 +1136,9 @@ string EvalDialogToken(string sToken, object oPC)
     }
 
     string sScript = GetLocalString(DIALOG, DLG_TOKEN + "*" + sNormal);
+    if (sScript == "")
+        sScript = GetLocalString(DIALOG, DLG_TOKEN_SCRIPT);
+    
     string sValues = GetLocalString(DIALOG, DLG_TOKEN_VALUES + "*" + sNormal);
 
     SetLocalString(oPC, DLG_TOKEN, sNormal);
@@ -1154,21 +1166,28 @@ string EvalDialogToken(string sToken, object oPC)
 string EvalDialogTokens(string sString)
 {
     object oPC = GetPCSpeaker();
-    json jTokens = RegExpIterate("<(.*?)>", sString);
-    if (jTokens == JSON_ARRAY)
-        return sString;
+    json jCheck = JSON_ARRAY;
 
-    jTokens = JsonArrayTransform(jTokens, JSON_ARRAY_UNIQUE);
-    
-    json jEval = JSON_ARRAY;
-    int n; for (n; n < JsonGetLength(jTokens); n++)
+    while (TRUE)
     {
-        string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
-        sString = RegExpReplace("<" + sToken + ">", sString, "^" + IntToString(n + 1));
-        jEval = JsonArrayInsert(jEval, JsonString(EvalDialogToken(sToken, oPC)));
+        json jTokens = RegExpIterate("<(?!c...>|/c>)(.*?)>", sString);
+        if (jTokens == JSON_ARRAY)
+            break;
+
+        jTokens = JsonArrayTransform(jTokens, JSON_ARRAY_UNIQUE);
+
+        if (jTokens == jCheck) break;
+        jCheck = jTokens;
+
+        json jEval = JSON_ARRAY;
+        int n; for (n; n < JsonGetLength(jTokens); n++)
+        {
+            string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
+            sString = SubstituteSubStrings(sString, "<" + sToken + ">", EvalDialogToken(sToken, oPC));
+        }
     }
 
-    return SubstituteString(sString, jEval, "^");
+    return sString;
 }
 
 // ----- System Functions ------------------------------------------------------
