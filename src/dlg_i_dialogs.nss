@@ -1086,8 +1086,6 @@ void AddDialogTokens()
     AddDialogToken("StartCheck",      sPrefix + "Token", HexToColor(DLG_COLOR_CHECK));
     AddDialogToken("StartHighlight",  sPrefix + "Token", HexToColor(DLG_COLOR_HIGHLIGHT));
     AddDialogToken("/Start",          sPrefix + "Token", "</c>");
-    AddDialogToken("token",           sPrefix + "Token", "<");
-    AddDialogToken("/token",          sPrefix + "Token", ">");
 }
 
 void AddCachedDialogToken(string sToken, string sValue)
@@ -1165,12 +1163,13 @@ string EvalDialogToken(string sToken, object oPC)
 
 string EvalDialogTokens(string sString)
 {
+    int i;
     object oPC = GetPCSpeaker();
-    json jCheck = JSON_ARRAY;
+    json jEvals = JSON_ARRAY, jCheck = JSON_ARRAY;
 
     while (TRUE)
     {
-        json jTokens = RegExpIterate("<(?!c...>|/c>)(.*?)>", sString);
+        json jTokens = RegExpIterate("<(?!c...>|/c>)(.*?)>(?!>)", sString);
         if (jTokens == JSON_ARRAY)
             break;
 
@@ -1179,15 +1178,25 @@ string EvalDialogTokens(string sString)
         if (jTokens == jCheck) break;
         jCheck = jTokens;
 
-        json jEval = JSON_ARRAY;
         int n; for (n; n < JsonGetLength(jTokens); n++)
         {
             string sToken = JsonGetString(JsonArrayGet(JsonArrayGet(jTokens, n), 1));
-            sString = SubstituteSubStrings(sString, "<" + sToken + ">", EvalDialogToken(sToken, oPC));
+
+            if (GetStringLeft(sToken, 1) == "<" && GetStringRight(sToken, 1) == ">")
+            {
+                sString = SubstituteSubStrings(sString, "<" + sToken + ">", "$" + IntToString(++i));
+                JsonArrayInsertInplace(jEvals, JsonString(sToken));
+            }
+            else 
+            {
+                string sEval = EvalDialogToken(sToken, oPC);
+                if ("<" + sToken + ">" != sEval)
+                    sString = SubstituteSubStrings(sString, "<" + sToken + ">", sEval);
+            }
         }
     }
 
-    return sString;
+    return SubstituteString(sString, jEvals, "$");
 }
 
 // ----- System Functions ------------------------------------------------------
