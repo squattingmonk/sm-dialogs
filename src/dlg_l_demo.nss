@@ -307,13 +307,13 @@ void TokenDialog()
 
     AddDialogPage(TOKEN_PAGE_INFO,
         "I'm demonstrating the use of dialog tokens. A token is a word or " +
-        "choice in angle brackets such as <token>FullName</token>. Tokens " +
+        "choice in angle brackets such as <<FullName>>. Tokens " +
         "can be embedded directly into page or node text when initializing " +
         "the dialog and are evaluated at display time. This means you don't " +
         "need to know the value of the token to make the text work.");
     AddDialogPage(TOKEN_PAGE_INFO,
-        "There are lots of tokens available, such as <token>class</token>, " +
-        "<token>race</token>, and <token>level</token>.\n\n" +
+        "There are lots of tokens available, such as <<class>>, " +
+        "<<race>>, and <<level>>.\n\n" +
         "That's how I can know you're a level <level> <racial> <class>.");
     AddDialogPage(TOKEN_PAGE_INFO,
         "You can also add your own tokens using AddDialogToken() in your " +
@@ -329,18 +329,18 @@ void TokenDialog()
         "Some tokens can have uppercase and lowercase variants. When the " +
         "token is all lowercase, the value will be converted to lowercase; " +
         "otherwise the value will be used as is. For example:\n\n" +
-        "<token>Class</token> -> <Class>\n" +
-        "<token>class</token> -> <class>");
+        "<<Class>> -> <Class>\n" +
+        "<<class>> -> <class>");
     AddDialogPage(TOKEN_PAGE_INFO,
         "Some tokens cannot be converted to lowercase; if there are any " +
         "uppercase characters in sToken, the text must be typed exactly and " +
         "its value will always be exact. For example:\n\n" +
-        "<token>FullName</token> -> <FullName>\n" +
-        "<token>fullname</token> -> <fullname>");
+        "<<FullName>> -> <FullName>\n" +
+        "<<fullname>> -> <fullname>");
     string sPage = AddDialogPage(TOKEN_PAGE_INFO,
         "Tokens are specific to a dialog, so if you add your own tokens, you " +
         "don't have to worry about making them unique across all dialogs. " +
-        "You could have a <token>value</token> token in two different " +
+        "You could have a <<value>> token in two different " +
         "dialogs that are evaluated by different library scripts. This gives " +
         "you a lot of flexibility when designing dialogs.");
     EnableDialogNode(DLG_NODE_BACK, sPage);
@@ -348,66 +348,67 @@ void TokenDialog()
 
     AddDialogPage(TOKEN_PAGE_LIST,
         "Gender tokens (case insensitive):\n\n" +
-        "- <token>bitch/bastard</token> -> <bitch/bastard>\n" +
-        "- <token>boy/girl</token> -> <boy/girl>\n" +
-        "- <token>brother/sister</token> -> <brother/sister>\n" +
-        "- <token>he/she</token> -> <he/she>\n" +
-        "- <token>him/her</token> -> <him/her>\n" +
-        "- <token>his/her</token> -> <his/her>\n" +
-        "- <token>his/hers</token> -> <his/hers>\n" +
-        "- <token>lad/lass</token> -> <lad/lass>\n" +
-        "- <token>lord/lady</token> -> <lord/lady>\n" +
-        "- <token>male/female</token> -> <male/female>\n" +
-        "- <token>man/woman</token> -> <man/woman>\n" +
-        "- <token>master/mistress</token> -> <master/mistress>\n" +
-        "- <token>mister/missus</token> -> <mister/missus>\n" +
-        "- <token>sir/madam</token> -> <sir/madam>");
+        "- <<bitch/bastard>> -> <bitch/bastard>\n" +
+        "- <<boy/girl>> -> <boy/girl>\n" +
+        "- <<brother/sister>> -> <brother/sister>\n" +
+        "- <<bitch/bastard>> -> <bitch/bastard>\n" +
+        "- <<bitch/bastard>> -> <bitch/bastard>\n" +
+        "- <<he/she>> -> <he/she>\n" +
+        "- <<him/her>> -> <him/her>\n" +
+        "- <<his/her>> -> <his/her>\n" +
+        "- <<his/hers>> -> <his/hers>\n" +
+        "- <<bitch/bastard>> -> <bitch/bastard>\n" +
+        "- <<lad/lass>> -> <lad/lass>\n" +
+        "- <<lord/lady>> -> <lord/lady>\n" +
+        "- <<male/female>> -> <male/female>\n" +
+        "- <<man/woman>> -> <man/woman>\n" +
+        "- <<master/mistress>> -> <master/mistress>\n" +
+        "- <<mister/missus>> -> <mister/missus>\n" +
+        "- <<sir/madam>> -> <sir/madam>");
     AddDialogPage(TOKEN_PAGE_LIST,
         "Alignment tokens (case insensitive):\n\n" +
-        "- <token>alignment</token> -> <alignment>\n" +
-        "- <token>good/evil</token> -> <good/evil>\n" +
-        "- <token>law/chaos</token> -> <law/chaos>\n" +
-        "- <token>lawful/chaotic</token> -> <lawful/chaotic>");
+        "- <<alignment>> -> <alignment>\n" +
+        "- <<good/evil>> -> <good/evil>\n" +
+        "- <<law/chaos>> -> <law/chaos>\n" +
+        "- <<lawful/chaotic>> -> <lawful/chaotic>");
     AddDialogPage(TOKEN_PAGE_LIST,
         "Character tokens (case insensitive):\n\n" +
-        "- <token>class</token> -> <class>\n" +
-        "- <token>classes</token> -> <classes>\n" +
-        "- <token>level</token> -> <level>\n" +
-        "- <token>race</token> -> <race>\n" +
-        "- <token>races</token> -> <races>\n" +
-        "- <token>racial</token> -> <racial>\n" +
-        "- <token>subrace</token> -> <subrace>\n\n" +
+        "- <<class>> -> <class>\n" +
+        "- <<classes>> -> <classes>\n" +
+        "- <<level>> -> <level>\n" +
+        "- <<race>> -> <race>\n" +
+        "- <<races>> -> <races>\n" +
+        "- <<racial>> -> <racial>\n" +
+        "- <<subrace>> -> <subrace>\n\n" +
         "Character tokens (case sensitive):\n\n" +
-        "- <token>Deity</token> -> <Deity>");
+        "- <<Deity>> -> <Deity>");
     AddDialogPage(TOKEN_PAGE_LIST,
         "Time tokens (case insensitive):\n\n" +
-        "- <token>day/night</token> -> <day/night>\n" +
-        "- <token>gameday</token> -> <gameday>\n" +
-        "- <token>gamedate</token> -> <gamedate>\n" +
-        "- <token>gamehour</token> -> <gamehour>\n" +
-        "- <token>gameminute</token> -> <gameminute>\n" +
-        "- <token>gamemonth</token> -> <gamemonth>\n" +
-        "- <token>gamesecond</token> -> <gamesecond>\n" +
-        "- <token>gametime12</token> -> <gametime12>\n" +
-        "- <token>gametime24</token> -> <gametime24>\n" +
-        "- <token>gameyear</token> -> <gameyear>\n" +
-        "- <token>quarterday</token> -> <quarterday>");
+        "- <<day/night>> -> <day/night>\n" +
+        "- <<gameday>> -> <gameday>\n" +
+        "- <<gamedate>> -> <gamedate>\n" +
+        "- <<gamehour>> -> <gamehour>\n" +
+        "- <<gameminute>> -> <gameminute>\n" +
+        "- <<gamemonth>> -> <gamemonth>\n" +
+        "- <<gamesecond>> -> <gamesecond>\n" +
+        "- <<gametime12>> -> <gametime12>\n" +
+        "- <<gametime24>> -> <gametime24>\n" +
+        "- <<gameyear>> -> <gameyear>\n" +
+        "- <<quarterday>> -> <quarterday>");
     AddDialogPage(TOKEN_PAGE_LIST,
         "Name tokens (case sensitive):\n\n" +
-        "- <token>FirstName</token> -> <FirstName>\n" +
-        "- <token>FullName</token> -> <FullName>\n" +
-        "- <token>LastName</token> -> <LastName>\n" +
-        "- <token>PlayerName</token> -> <PlayerName>");
+        "- <<FirstName>> -> <FirstName>\n" +
+        "- <<FullName>> -> <FullName>\n" +
+        "- <<LastName>> -> <LastName>\n" +
+        "- <<PlayerName>> -> <PlayerName>");
     sPage = AddDialogPage(TOKEN_PAGE_LIST,
         "Special tokens (case sensitive):\n\n" +
-        "- <token>StartAction</token>foo<token>/Start</token> -> " +
+        "- <<StartAction>>foo<</Start>> -> " +
             "<StartAction>foo</Start>\n" +
-        "- <token>StartCheck</token>foo<token>/Start</token> -> " +
+        "- <<StartCheck>>foo<</Start>> -> " +
             "<StartCheck>foo</Start>\n" +
-        "- <token>StartHighlight</token>foo<token>/Start</token> -> " +
-            "<StartHighlight>foo</Start>\n\n" +
-        "Special tokens (case insensitive):\n\n" +
-        "- <token>token</token>foo<token>/token</token> -> <token>foo</token>");
+        "- <<StartHighlight>>foo<</Start>> -> " +
+            "<StartHighlight>foo</Start>");
     EnableDialogNode(DLG_NODE_BACK, sPage);
     SetDialogTarget("Main Page", sPage, DLG_NODE_BACK);
 }
